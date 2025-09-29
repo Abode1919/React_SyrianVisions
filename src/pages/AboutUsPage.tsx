@@ -10,24 +10,24 @@ const AboutUsPage: React.FC = () => {
 
   const team = [
     {
-      name: 'عبدو أحمد',
-      nameEn: 'Abdo Ahmed',
+      name: 'موسى الرحمون',
+      nameEn: 'Moussa Elrahmoun',
       role: 'مطور واجهات أمامية',
       roleEn: 'Frontend Developer',
       image: "src/pictures/moussa.jpeg",
       skills: ['React', 'TypeScript', 'CSS']
     }, 
     {
-      name: 'إبراهيم محمد',
-      nameEn: 'Ibrahim Mohammed',
+      name: 'عبدو غصن',
+      nameEn: 'Abdo Ghosn',
       role: 'مطور خلفية',
       roleEn: 'Backend Developer',
       image: "src/pictures/abdo.jpeg",
       skills: ['Node.js', 'Python', 'Database']
     },
     {
-      name: 'موسى علي',
-      nameEn: 'Moussa Ali',
+      name: 'إبراهيم الرحمون ',
+      nameEn: 'Ibrahim Elrahmoun',
       role: 'مصمم UX/UI',
       roleEn: 'UX/UI Designer',
       image: "src/pictures/ibrahim.jpeg",

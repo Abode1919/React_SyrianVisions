@@ -36,7 +36,7 @@ const Header: React.FC = () => {
     { key: 'services', href: '#services', action: () => scrollToSection('services') },
     { key: 'work', href: '#work', action: () => scrollToSection('work') },
     { key: 'pricing', href: '#pricing', action: () => scrollToSection('pricing') }, */
-    { key: 'contact', href: '#contact', action: () => scrollToSection('contact') }
+    { key: 'home', href: '#hero', action: () => scrollToSection('hero') }
   ];
 
   const secondaryLinks = [

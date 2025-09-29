@@ -95,8 +95,8 @@ const ContactSection: React.FC = () => {
     {
       icon: Mail,
       title: isRTL ? 'البريد الإلكتروني' : 'Email',
-      value: 'info@syrianvisions.com',
-      link: 'mailto:info@syrianvisions.com'
+      value: 'support@syrianvisions.com',
+      link: 'mailto:support@syrianvisions.com'
     },
     {
       icon: Phone,
