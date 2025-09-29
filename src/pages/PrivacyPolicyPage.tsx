@@ -115,28 +115,25 @@ const PrivacyPolicyPage: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="mailto:privacy@syrianvisions.com"
+                  href="mailto:support@syrianvisions.com"
                   className="btn-primary px-6 py-3 rounded-full text-white font-semibold hover:transform hover:-translate-y-1 transition-all"
                 >
-                  privacy@syrianvisions.com
+                  support@syrianvisions.com
                 </a>
                 <a
                   href="tel:+963xxxxxxxxx"
                   className="btn-secondary px-6 py-3 rounded-full font-semibold hover:transform hover:-translate-y-1 transition-all"
                 >
-                  +963 xxx xxx xxx
+                  Facebook
                 </a>
               </div>
               
               <div className="mt-8 pt-6 border-t border-border-color">
                 <p className="text-sm text-text-muted">
                   {isRTL 
-                    ? 'SyrianVisions - استوديو تطوير مواقع الويب'
+                    ? 'SyrianVisions -  تطوير مواقع الويب'
                     : 'SyrianVisions - Web Development Studio'
                   }
-                </p>
-                <p className="text-sm text-text-muted">
-                  {isRTL ? 'دمشق، سوريا' : 'Damascus, Syria'}
                 </p>
               </div>
             </div>

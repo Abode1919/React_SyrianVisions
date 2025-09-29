@@ -5,9 +5,11 @@ import ServicesSection from '../components/sections/ServicesSection';
 import PortfolioSection from '../components/sections/PortfolioSection';
 import PricingSection from '../components/sections/PricingSection';
 import ContactSection from '../components/sections/ContactSection';
+import Reveal from "../components/anim/Reveal"
 
 const HomePage: React.FC = () => {
   return (
+  <Reveal delay={0.3}>
     <div>
       <HeroSection />
       <SplitSection />
@@ -16,6 +18,7 @@ const HomePage: React.FC = () => {
       <PricingSection />
       <ContactSection />
     </div>
+  </Reveal>
   );
 };
 

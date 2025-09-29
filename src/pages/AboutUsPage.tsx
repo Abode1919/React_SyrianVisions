@@ -2,6 +2,8 @@ import React from 'react';
 import { ArrowRight, Target, Users, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import Reveal from "../components/anim/Reveal"
+
 
 const AboutUsPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
@@ -12,15 +14,15 @@ const AboutUsPage: React.FC = () => {
       nameEn: 'Abdo Ahmed',
       role: 'مطور واجهات أمامية',
       roleEn: 'Frontend Developer',
-      image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: "src/pictures/moussa.jpeg",
       skills: ['React', 'TypeScript', 'CSS']
-    },
+    }, 
     {
       name: 'إبراهيم محمد',
       nameEn: 'Ibrahim Mohammed',
       role: 'مطور خلفية',
       roleEn: 'Backend Developer',
-      image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: "src/pictures/abdo.jpeg",
       skills: ['Node.js', 'Python', 'Database']
     },
     {
@@ -28,11 +30,11 @@ const AboutUsPage: React.FC = () => {
       nameEn: 'Moussa Ali',
       role: 'مصمم UX/UI',
       roleEn: 'UX/UI Designer',
-      image: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: "src/pictures/ibrahim.jpeg",
       skills: ['Figma', 'Adobe XD', 'Sketch']
     }
   ];
-
+  
   const scrollToContact = () => {
     const element = document.getElementById('contact');
     if (element) {
@@ -43,6 +45,7 @@ const AboutUsPage: React.FC = () => {
   };
 
   return (
+  <Reveal>
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-20 gradient-primary">
@@ -69,6 +72,7 @@ const AboutUsPage: React.FC = () => {
               </div>
               
               <div className="space-y-4 text-text-muted text-lg">
+
                 <p>
                   {isRTL 
                     ? 'نحن فريق من المطورين والمصممين المتخصصين في إنشاء حلول رقمية مبتكرة للأعمال العربية. هدفنا هو مساعدة الشركات والأفراد على بناء حضور رقمي قوي وفعال.'
@@ -86,7 +90,7 @@ const AboutUsPage: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-6">
               <div className="glass-card rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-white mb-2">50+</div>
+                <div className="text-3xl font-bold text-white mb-2">40+</div>
                 <div className="text-text-muted">
                   {isRTL ? 'مشروع منجز' : 'Completed Projects'}
                 </div>
@@ -98,7 +102,7 @@ const AboutUsPage: React.FC = () => {
                 </div>
               </div>
               <div className="glass-card rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-white mb-2">5+</div>
+                <div className="text-3xl font-bold text-white mb-2">3+</div>
                 <div className="text-text-muted">
                   {isRTL ? 'سنوات خبرة' : 'Years Experience'}
                 </div>
@@ -112,8 +116,9 @@ const AboutUsPage: React.FC = () => {
             </div>
           </div>
         </div>
+      
       </section>
-
+  
       {/* Team Section */}
       <section className="py-20 bg-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -206,6 +211,7 @@ const AboutUsPage: React.FC = () => {
         </div>
       </section>
     </div>
+    </Reveal>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import Reveal from "../anim/Reveal"
 
 interface Project {
   id: number;
@@ -93,6 +94,7 @@ const PortfolioSection: React.FC = () => {
   };
 
   return (
+  <Reveal delay={0.6}>
     <section id="work" className="py-20 bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -102,6 +104,7 @@ const PortfolioSection: React.FC = () => {
           <p className="text-xl text-text-muted max-w-3xl mx-auto mb-8">
             {t('workSubtitle')}
           </p>
+          
 
           {/* Filter Buttons */}
           <div className="flex flex-wrap justify-center gap-4">
@@ -192,6 +195,7 @@ const PortfolioSection: React.FC = () => {
         )}
       </div>
     </section>
+</Reveal>
   );
 };
 

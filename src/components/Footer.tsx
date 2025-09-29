@@ -27,10 +27,15 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 rtl:space-x-reverse mb-4">
-              <div className="w-8 h-8 bg-gradient-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
-              </div>
-              <span className="text-xl font-bold text-white">SyrianVisions</span>
+              
+              {/* Logo */}
+              <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse">
+                <img 
+                  src="src/pictures/logo.png"  // legg inn sti til logoen din
+                  alt="SyrianVisions logo" 
+                  className="w-25 h-10"   // juster storleik
+                />
+          </Link>
             </div>
             <p className="text-text-muted mb-6 max-w-md">
               {t('footerDescription')}
@@ -38,7 +43,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center space-x-4 rtl:space-x-reverse">
               <div className="flex items-center space-x-2 rtl:space-x-reverse text-text-muted">
                 <Mail className="w-4 h-4" />
-                <span>info@syrianvisions.com</span>
+                <span>support@syrianvisions.com</span>
               </div>
               <div className="flex items-center space-x-2 rtl:space-x-reverse text-text-muted">
                 <Phone className="w-4 h-4" />
@@ -80,6 +85,12 @@ const Footer: React.FC = () => {
                 className="block text-text-muted hover:text-white transition-colors"
               >
                 {t('faq')}
+              </Link>
+              <Link
+                to="/privacy"
+                className="block text-text-muted hover:text-white transition-colors"
+              >
+                {t('privacy')}
               </Link>
             </div>
           </div>

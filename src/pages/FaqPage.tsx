@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import Reveal from "../components/anim/Reveal"
 
 interface FAQ {
   question: string;
@@ -69,6 +70,7 @@ const FaqPage: React.FC = () => {
   };
 
   return (
+<Reveal>
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-20 gradient-primary">
@@ -154,6 +156,7 @@ const FaqPage: React.FC = () => {
         </div>
       </section>
     </div>
+</Reveal>
   );
 };
 

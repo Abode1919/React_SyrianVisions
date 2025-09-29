@@ -32,10 +32,10 @@ const Header: React.FC = () => {
   };
 
   const navLinks = [
-    { key: 'home', href: '#hero', action: () => scrollToSection('hero') },
+   /* { key: 'home', href: '#hero', action: () => scrollToSection('hero') },
     { key: 'services', href: '#services', action: () => scrollToSection('services') },
     { key: 'work', href: '#work', action: () => scrollToSection('work') },
-    { key: 'pricing', href: '#pricing', action: () => scrollToSection('pricing') },
+    { key: 'pricing', href: '#pricing', action: () => scrollToSection('pricing') }, */
     { key: 'contact', href: '#contact', action: () => scrollToSection('contact') }
   ];
 
@@ -56,10 +56,11 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse">
-            <div className="w-8 h-8 bg-gradient-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">S</span>
-            </div>
-            <span className="text-xl font-bold text-white">SyrianVisions</span>
+            <img 
+              src="src/pictures/logo.png"  // legg inn sti til logoen din
+              alt="SyrianVisions logo" 
+              className="w-25 h-10"   // juster storleik
+            />
           </Link>
 
           {/* Desktop Navigation */}
