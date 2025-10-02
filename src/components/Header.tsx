@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Globe } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import logo from '../pictures/logo.png'
+
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,7 +59,7 @@ const Header: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse">
             <img 
-              src="src/pictures/logo.png"  // legg inn sti til logoen din
+              src={logo}  // legg inn sti til logoen din
               alt="SyrianVisions logo" 
               className="w-25 h-10"   // juster storleik
             />

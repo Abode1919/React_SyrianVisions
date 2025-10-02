@@ -3,6 +3,10 @@ import { ArrowRight, Target, Users, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Reveal from "../components/anim/Reveal"
+import moussaImg from '../pictures/moussa.jpeg'
+import abdoImg from '../pictures/abdo.jpeg'
+import ibrahimImg from '../pictures/ibrahim.jpeg'
+
 
 
 const AboutUsPage: React.FC = () => {
@@ -14,7 +18,7 @@ const AboutUsPage: React.FC = () => {
       nameEn: 'Moussa Elrahmoun',
       role: 'مطور واجهات أمامية',
       roleEn: 'Frontend Developer',
-      image: "src/pictures/moussa.jpeg",
+      image: moussaImg,
       skills: ['React', 'TypeScript', 'CSS']
     }, 
     {
@@ -22,7 +26,7 @@ const AboutUsPage: React.FC = () => {
       nameEn: 'Abdo Ghosn',
       role: 'مطور خلفية',
       roleEn: 'Backend Developer',
-      image: "src/pictures/abdo.jpeg",
+      image: abdoImg,
       skills: ['Node.js', 'Python', 'Database']
     },
     {
@@ -30,7 +34,7 @@ const AboutUsPage: React.FC = () => {
       nameEn: 'Ibrahim Elrahmoun',
       role: 'مصمم UX/UI',
       roleEn: 'UX/UI Designer',
-      image: "src/pictures/ibrahim.jpeg",
+      image: ibrahimImg,
       skills: ['Figma', 'Adobe XD', 'Sketch']
     }
   ];
