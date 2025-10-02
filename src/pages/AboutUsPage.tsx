@@ -54,11 +54,15 @@ const AboutUsPage: React.FC = () => {
         <meta property="og:description" content={seo.desc} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={seo.canonical} />
-        <meta property="og:image" content="/public/pictures/og-image.png" />
+        {/* Absolutt URL til biletet */}
+        <meta property="og:image" content="https://syrianvisions.com/pictures/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={seo.title} />
         <meta name="twitter:description" content={seo.desc} />
-        <meta name="twitter:image" content="/public/pictures/og-image.png" />
+        <meta name="twitter:image" content="/pictures/og-image.png" />
       </Helmet>
 
       <div className="pt-20">
