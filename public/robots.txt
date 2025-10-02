@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://syrianvisions.com/sitemap.xml
