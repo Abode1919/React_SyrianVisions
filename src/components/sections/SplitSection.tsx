@@ -1,15 +1,33 @@
 import React from 'react';
-import { Check, Zap, Shield, Heart } from 'lucide-react';
+import { Check, Zap, Shield, Heart, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 const SplitSection: React.FC = () => {
   const { t, isRTL } = useLanguage();
 
   const benefits = [
-    { icon: Zap, title: 'سرعة في التنفيذ', titleEn: 'Fast Execution' },
-    { icon: Shield, title: 'جودة عالية', titleEn: 'High Quality' },
-    { icon: Heart, title: 'دعم مستمر', titleEn: 'Continuous Support' }
-  ];
+  {
+    icon: Zap,                 // Fast Execution
+    title: 'تنفيذ سريع',
+    titleEn: 'Fast Execution',
+    desc: 'ننجز مشاريعك في الوقت المحدد مع أداء عالي.',
+    descEn: 'We deliver on time with high performance.'
+  },
+  {
+    icon: ShieldCheck,                   // High Quality
+    title: 'جودة عالية',
+    titleEn: 'High Quality',
+    desc: 'نستخدم أحدث التقنيات لنقدم نتائج مميزة.',
+    descEn: 'We use the latest tech to deliver outstanding results.'
+  },
+  {
+    icon: Heart,                         // Continuous Support
+    title: 'دعم مستمر',
+    titleEn: 'Continuous Support',
+    desc: 'نرافقك بعد الإطلاق بدعم وتوجيه مستمر.',
+    descEn: 'We stay with you after launch with ongoing support.'
+  }
+];
 
   return (
     <section className="py-20 bg-primary">
@@ -41,10 +59,7 @@ const SplitSection: React.FC = () => {
                         {isRTL ? benefit.title : benefit.titleEn}
                       </h3>
                       <p className="text-text-muted">
-                        {isRTL 
-                          ? 'نستخدم أحدث التقنيات وأفضل الممارسات لضمان حصولك على نتائج متميزة.'
-                          : 'We use the latest technologies and best practices to ensure you get outstanding results.'
-                        }
+                        {isRTL ? benefit.desc : benefit.descEn}
                       </p>
                     </div>
                   </div>

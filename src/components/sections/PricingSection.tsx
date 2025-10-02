@@ -16,14 +16,14 @@ const PricingSection: React.FC = () => {
     {
       name: 'أساسي',
       nameEn: 'Basic',
-      price: '$299',
+      price: '$100',
       popular: false,
       features: [
         'تصميم صفحة واحدة',
         'تصميم متجاوب',
         'نماذج اتصال',
         'تحسين أساسي لمحركات البحث',
-        'شهر استضافة مجانية'
+        'شهر استضافة مجانية' 
       ],
       featuresEn: [
         'Single Page Design',
@@ -36,7 +36,7 @@ const PricingSection: React.FC = () => {
     {
       name: 'قياسي',
       nameEn: 'Standard',
-      price: '$599',
+      price: '$150',
       popular: true,
       features: [
         'حتى 5 صفحات',
@@ -58,7 +58,7 @@ const PricingSection: React.FC = () => {
     {
       name: 'متميز',
       nameEn: 'Premium',
-      price: '$1299',
+      price: '$299',
       popular: false,
       features: [
         'عدد صفحات غير محدود',
@@ -115,14 +115,18 @@ const PricingSection: React.FC = () => {
               )}
 
               <div className="text-center mb-8">
+                
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {isRTL ? plan.name : plan.nameEn}
                 </h3>
+                <p className="text-text-muted">
+                  {isRTL ? 'يبدأ من' : 'Starts from'}
+                </p>
                 <div className="text-4xl font-bold text-white mb-2">
                   {plan.price}
                 </div>
                 <p className="text-text-muted">
-                  {isRTL ? 'دفعة واحدة' : 'One-time payment'}
+                  {isRTL ? 'كل شهر' : 'Each month'}
                 </p>
               </div>
 
