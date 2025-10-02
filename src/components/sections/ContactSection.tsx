@@ -60,7 +60,7 @@ const ContactSection: React.FC = () => {
       formDataToSend.append('_gotcha', ''); // Honeypot
 
       // Replace with your actual Formspree endpoint
-      const response = await fetch('https://formspree.io/f/your-form-id', {
+      const response = await fetch('https://formspree.io/f/xpwyrryg', {
         method: 'POST',
         body: formDataToSend,
         headers: {
@@ -165,7 +165,7 @@ const ContactSection: React.FC = () => {
               <ul className="space-y-3 text-text-muted">
                 <li className="flex items-center space-x-2 rtl:space-x-reverse">
                   <div className="w-2 h-2 bg-accent-color rounded-full"></div>
-                  <span>{isRTL ? 'خبرة أكثر من 5 سنوات' : '5+ Years of Experience'}</span>
+                  <span>{isRTL ? 'خبرة أكثر من 3 سنوات' : '3+ Years of Experience'}</span>
                 </li>
                 <li className="flex items-center space-x-2 rtl:space-x-reverse">
                   <div className="w-2 h-2 bg-accent-color rounded-full"></div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Palette, Code, Server, Search, Smartphone, ShoppingCart } from 'lucide-react';
+import { Paintbrush, Code2, Server, Target, Utensils, ShoppingBag } from 'lucide-react';
+
 import { useLanguage } from '../../context/LanguageContext';
 
 const ServicesSection: React.FC = () => {
@@ -7,14 +8,14 @@ const ServicesSection: React.FC = () => {
 
   const services = [
     {
-      icon: Palette,
+      icon: Paintbrush,
       title: 'تصميم المواقع',
       titleEn: 'Web Design',
       features: ['تصميم متجاوب', 'واجهة مستخدم حديثة', 'تجربة مستخدم متميزة'],
       featuresEn: ['Responsive Design', 'Modern UI', 'Excellent UX']
     },
     {
-      icon: Code,
+      icon: Code2,
       title: 'تطوير المواقع',
       titleEn: 'Web Development',
       features: ['تطوير متقدم', 'أداء عالي', 'أمان متطور'],
@@ -28,21 +29,21 @@ const ServicesSection: React.FC = () => {
       featuresEn: ['Reliable Hosting', 'Regular Maintenance', '24/7 Technical Support']
     },
     {
-      icon: Search,
+      icon: Target,
       title: 'تحسين محركات البحث',
       titleEn: 'SEO Optimization',
       features: ['تحسين SEO', 'تحليلات مفصلة', 'نتائج مضمونة'],
       featuresEn: ['SEO Optimization', 'Detailed Analytics', 'Guaranteed Results']
     },
     {
-      icon: Smartphone,
-      title: 'تطبيقات الجوال',
-      titleEn: 'Mobile Apps',
-      features: ['تطبيقات iOS', 'تطبيقات Android', 'تطبيقات هجينة'],
-      featuresEn: ['iOS Apps', 'Android Apps', 'Hybrid Apps']
+      icon: Utensils,
+      title: 'حلول الطلبات',
+      titleEn: 'Ordering Solutions',
+      features: ['قوائم رقمية مع الدفع ', 'أنظمة نقاط البيع للموظفين (POS)', 'نظام عرض المطبخ (الطلبات الرقمية للمطبخ)'],
+      featuresEn: ['Digital Menus & Payments', 'POS Systems for Staff', 'Kitchen Display (KDS)']
     },
     {
-      icon: ShoppingCart,
+      icon: ShoppingBag,
       title: 'التجارة الإلكترونية',
       titleEn: 'E-commerce',
       features: ['متاجر إلكترونية', 'أنظمة دفع آمنة', 'إدارة المخزون'],
