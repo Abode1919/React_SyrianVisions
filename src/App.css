@@ -7,8 +7,8 @@
   --text-color: #ffffff;
   --text-muted: #a0aec0;
   --border-color: #4a5568;
-  --gradient-primary: linear-gradient(135deg, #5d53bb 0%, #1507db9a 100%);
-  --gradient-primary: linear-gradient(180deg, #081928 0%, #5d53bb 100%, transparent 100%);
+  --gradient-primary: linear-gradient(135deg, #5d53bb 0%, #0786db9a 100%);
+  --gradient-primary: linear-gradient(180deg, #081928 0%, #29a4b4 100%, transparent 100%);
   --gradient-accent: linear-gradient(135deg, #1c1a96 0%, #2c75a0 100%);
   --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }

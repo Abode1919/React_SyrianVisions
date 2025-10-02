@@ -14,10 +14,8 @@ const Footer: React.FC = () => {
   };
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' }
+    { icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61581091092517', label: 'Facebook' },
+   
   ];
 
   return (
@@ -44,10 +42,6 @@ const Footer: React.FC = () => {
               <div className="flex items-center space-x-2 rtl:space-x-reverse text-text-muted">
                 <Mail className="w-4 h-4" />
                 <span>support@syrianvisions.com</span>
-              </div>
-              <div className="flex items-center space-x-2 rtl:space-x-reverse text-text-muted">
-                <Phone className="w-4 h-4" />
-                <span>+963 xxx xxx xxx</span>
               </div>
             </div>
           </div>
