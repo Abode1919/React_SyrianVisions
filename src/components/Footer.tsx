@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import logo from '../pictures/logo.png'
 
 const Footer: React.FC = () => {
   const { t, isRTL } = useLanguage();
@@ -29,7 +30,7 @@ const Footer: React.FC = () => {
               {/* Logo */}
               <Link to="/" className="flex items-center space-x-2 rtl:space-x-reverse">
                 <img 
-                  src="src/pictures/logo.png"  // legg inn sti til logoen din
+                  src={logo}  // legg inn sti til logoen din
                   alt="SyrianVisions logo" 
                   className="w-25 h-10"   // juster storleik
                 />
