@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Facebook, MapPin, Send } from 'lucide-react';
+import { Mail, Facebook, Send } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 interface FormData {
@@ -103,12 +103,6 @@ const ContactSection: React.FC = () => {
       title: isRTL ? 'فيسبوك' : 'Facebook',
       value: 'Syrian Visions',
       link: 'https://www.facebook.com/profile.php?id=61581091092517'
-    },
-    {
-      icon: MapPin,
-      title: isRTL ? 'الموقع' : 'Location',
-      value: isRTL ? 'دمشق، سوريا' : 'Damascus, Syria',
-      link: '#'
     }
   ];
 
