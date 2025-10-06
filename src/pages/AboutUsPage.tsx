@@ -1,72 +1,47 @@
-import React from 'react'
-import { ArrowRight, Users, Award, Target } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { useLanguage } from '../context/LanguageContext'
-import Reveal from '../components/anim/Reveal'
-import moussaImg from '../pictures/moussa.jpeg'
-import abdoImg from '../pictures/abdo.jpeg'
-import ibrahimImg from '../pictures/ibrahim.jpeg'
-import { Helmet } from 'react-helmet-async'
+import React from 'react';
+import { ArrowRight, Users, Award, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import Reveal from '../components/anim/Reveal';
+import moussaImg from '../pictures/moussa.jpeg';
+import abdoImg from '../pictures/abdo.jpeg';
+import ibrahimImg from '../pictures/ibrahim.jpeg';
+import { Helmet } from 'react-helmet-async';
+import Seo from '../components/Seo';
 
 const AboutUsPage: React.FC = () => {
-  const { t, isRTL } = useLanguage()
+  const { t, isRTL } = useLanguage();
 
-  // 🔹 SEO for denne sida
-  const seo = isRTL
-    ? {
-        title: 'من نحن – Syrian Visions',
-        desc: 'تعرّف على فريقنا والخبرة التي نقدّمها في التصميم والتطوير.',
-        canonical: 'https://syrianvisions.com/about',
-        lang: 'ar',
-        dir: 'rtl',
-      }
-    : {
-        title: 'About – Syrian Visions',
-        desc: 'Learn about our team and the experience we bring in design & development.',
-        canonical: 'https://syrianvisions.com/about',
-        lang: 'en',
-        dir: 'ltr',
-      }
+  const lang = isRTL ? 'ar' : 'en';
+  const dir = isRTL ? 'rtl' : 'ltr';
+
+  const title = isRTL ? 'من نحن – Syrian Visions' : 'About – Syrian Visions';
+  const desc = isRTL
+    ? 'تعرّف على فريقنا والخبرة التي نقدّمها في التصميم والتطوير.'
+    : 'Learn about our team and the experience we bring in design & development.';
 
   const team = [
     { name: 'موسى الرحمون', nameEn: 'Moussa Elrahmoun', role: 'مطور واجهات أمامية', roleEn: 'Frontend Developer', image: moussaImg, skills: ['React','TypeScript','CSS'] },
     { name: 'عبدو غصن', nameEn: 'Abdo Ghosn', role: 'مطور خلفية', roleEn: 'Backend Developer', image: abdoImg, skills: ['Node.js','Python','Database'] },
     { name: 'إبراهيم الرحمون ', nameEn: 'Ibrahim Elrahmoun', role: 'مصمم UX/UI', roleEn: 'UX/UI Designer', image: ibrahimImg, skills: ['Figma','Adobe XD','Sketch'] },
-  ]
+  ];
 
   const scrollToContact = () => {
-    const el = document.getElementById('contact')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-    else window.location.href = '/#contact'
-  }
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    else window.location.href = '/#contact';
+  };
 
   return (
     <Reveal>
-      {/* 🔹 Helmet: språk + SEO for /about */}
-      <Helmet>
-        <html lang={seo.lang} dir={seo.dir} />
-        <title>{seo.title}</title>
-        <meta name="description" content={seo.desc} />
-        <link rel="canonical" href={seo.canonical} />
+      {/* Språk/retning på sida */}
+      <Helmet htmlAttributes={{ lang, dir }} />
 
-        {/* Open Graph / Twitter (valfritt men fint) */}
-        <meta property="og:title" content={seo.title} />
-        <meta property="og:description" content={seo.desc} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={seo.canonical} />
-        {/* Absolutt URL til biletet */}
-        <meta property="og:image" content="https://syrianvisions.com/pictures/og-image.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:type" content="image/png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seo.title} />
-        <meta name="twitter:description" content={seo.desc} />
-        <meta name="twitter:image" content="/pictures/og-image.png" />
-      </Helmet>
+      {/* SEO for /about */}
+      <Seo title={title} description={desc} path="/about" />
 
       <div className="pt-20">
-        {/* Hero Section */}
+        {/* Hero */}
         <section className="py-20 gradient-primary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
@@ -78,7 +53,7 @@ const AboutUsPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Mission Section */}
+        {/* Mission */}
         <section className="py-20 bg-primary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -126,7 +101,7 @@ const AboutUsPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Team Section */}
+        {/* Team */}
         <section className="py-20 bg-secondary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -145,13 +120,19 @@ const AboutUsPage: React.FC = () => {
               {team.map((m, i) => (
                 <div key={i} className="glass-card rounded-xl p-6 text-center group hover:-translate-y-2 transition-all">
                   <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src={m.image} alt={isRTL ? m.name : m.nameEn} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                    <img
+                      src={m.image}
+                      alt={isRTL ? m.name : m.nameEn}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                    />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">{isRTL ? m.name : m.nameEn}</h3>
                   <p className="text-accent-color font-medium mb-4">{isRTL ? m.role : m.roleEn}</p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {m.skills.map((s, si) => (
-                      <span key={si} className="px-3 py-1 bg-primary rounded-full text-sm text-text-muted">{s}</span>
+                      <span key={si} className="px-3 py-1 bg-primary rounded-full text-sm text-text-muted">
+                        {s}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -174,11 +155,17 @@ const AboutUsPage: React.FC = () => {
                 {isRTL ? 'دعنا نساعدك...' : 'Let us help you achieve your digital vision.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onClick={scrollToContact} className="btn-primary px-8 py-4 rounded-full text-white font-semibold flex items-center justify-center space-x-3 rtl:space-x-reverse">
+                <button
+                  onClick={scrollToContact}
+                  className="btn-primary px-8 py-4 rounded-full text-white font-semibold flex items-center justify-center space-x-3 rtl:space-x-reverse"
+                >
                   <span>{t('contact')}</span>
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
                 </button>
-                <Link to="/work" className="btn-secondary px-8 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 rtl:space-x-reverse">
+                <Link
+                  to="/work"
+                  className="btn-secondary px-8 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 rtl:space-x-reverse"
+                >
                   <span>{t('work')}</span>
                 </Link>
               </div>
@@ -187,7 +174,7 @@ const AboutUsPage: React.FC = () => {
         </section>
       </div>
     </Reveal>
-  )
-}
+  );
+};
 
-export default AboutUsPage
+export default AboutUsPage;
