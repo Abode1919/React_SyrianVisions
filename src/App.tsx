@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { AnimatePresence } from 'framer-motion'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 
+
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
