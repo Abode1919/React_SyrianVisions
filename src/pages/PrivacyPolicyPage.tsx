@@ -1,43 +1,69 @@
 import React from 'react';
 import { Shield, Eye, Lock, FileText } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { Helmet } from 'react-helmet-async';
+import Seo from '../components/Seo';
 
 const PrivacyPolicyPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
+
+  const lang = isRTL ? 'ar' : 'en';
+  const dir = isRTL ? 'rtl' : 'ltr';
+
+  const title = isRTL
+    ? 'سياسة الخصوصية – Syrian Visions'
+    : 'Privacy Policy – Syrian Visions';
+
+  const desc = isRTL
+    ? 'تعرف على كيفية جمعنا واستخدامنا وحمايتنا لبياناتك الشخصية عند استخدامك لموقعنا وخدماتنا.'
+    : 'Learn how we collect, use, and protect your personal data when you use our website and services.';
 
   const sections = [
     {
       icon: FileText,
       title: 'جمع المعلومات',
       titleEn: 'Information Collection',
-      content: 'نقوم بجمع المعلومات التي تقدمها لنا مباشرة عند ملء النماذج على موقعنا، مثل الاسم والبريد الإلكتروني ورقم الهاتف. كما نجمع معلومات تقنية مثل عنوان IP ونوع المتصفح لتحسين خدماتنا.',
-      contentEn: 'We collect information that you provide to us directly when filling out forms on our website, such as name, email, and phone number. We also collect technical information such as IP address and browser type to improve our services.'
+      content:
+        'نقوم بجمع المعلومات التي تقدمها لنا مباشرة عند ملء النماذج على موقعنا، مثل الاسم والبريد الإلكتروني ورقم الهاتف. كما نجمع معلومات تقنية مثل عنوان IP ونوع المتصفح لتحسين خدماتنا.',
+      contentEn:
+        'We collect information you provide directly when filling forms on our site (name, email, phone). We also collect technical data like IP address and browser type to improve our services.'
     },
     {
       icon: Eye,
       title: 'استخدام المعلومات',
       titleEn: 'Use of Information',
-      content: 'نستخدم المعلومات التي نجمعها لتقديم خدماتنا وتحسينها، والتواصل معك بشأن مشاريعك، وإرسال تحديثات مهمة. لا نبيع أو نشارك معلوماتك الشخصية مع أطراف ثالثة دون موافقتك.',
-      contentEn: 'We use the information we collect to provide and improve our services, communicate with you about your projects, and send important updates. We do not sell or share your personal information with third parties without your consent.'
+      content:
+        'نستخدم المعلومات التي نجمعها لتقديم خدماتنا وتحسينها، والتواصل معك بشأن مشاريعك، وإرسال تحديثات مهمة. لا نبيع أو نشارك معلوماتك الشخصية مع أطراف ثالثة دون موافقتك.',
+      contentEn:
+        'We use collected information to deliver and improve services, communicate about your projects, and send important updates. We do not sell or share your personal data with third parties without consent.'
     },
     {
       icon: Lock,
       title: 'حماية البيانات',
       titleEn: 'Data Protection',
-      content: 'نتخذ إجراءات أمنية متقدمة لحماية معلوماتك الشخصية من الوصول غير المصرح به أو التغيير أو الكشف أو التدمير. نستخدم تشفير SSL ونحدث أنظمتنا الأمنية بانتظام.',
-      contentEn: 'We take advanced security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction. We use SSL encryption and regularly update our security systems.'
+      content:
+        'نتخذ إجراءات أمنية متقدمة لحماية معلوماتك الشخصية من الوصول غير المصرح به أو التغيير أو الكشف أو التدمير. نستخدم تشفير SSL ونحدث أنظمتنا الأمنية بانتظام.',
+      contentEn:
+        'We employ security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction. We use SSL encryption and regularly update our security systems.'
     },
     {
       icon: Shield,
       title: 'حقوقك',
       titleEn: 'Your Rights',
-      content: 'لديك الحق في الوصول إلى معلوماتك الشخصية وتصحيحها أو حذفها. يمكنك أيضاً طلب نسخة من بياناتك أو منع معالجتها. للقيام بذلك، يرجى التواصل معنا عبر البريد الإلكتروني.',
-      contentEn: 'You have the right to access, correct, or delete your personal information. You can also request a copy of your data or prevent its processing. To do so, please contact us via email.'
+      content:
+        'لديك الحق في الوصول إلى معلوماتك الشخصية وتصحيحها أو حذفها. يمكنك أيضاً طلب نسخة من بياناتك أو منع معالجتها. للقيام بذلك، يرجى التواصل معنا عبر البريد الإلكتروني.',
+      contentEn:
+        'You have the right to access, correct, or delete your personal data. You can also request a copy or restrict processing. To exercise these rights, contact us via email.'
     }
   ];
 
   return (
     <div className="pt-20">
+      {/* språk/retning */}
+      <Helmet htmlAttributes={{ lang, dir }} />
+      {/* SEO for /privacy */}
+      <Seo title={title} description={desc} path="/privacy" />
+
       {/* Hero Section */}
       <section className="py-20 gradient-primary">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -47,9 +73,7 @@ const PrivacyPolicyPage: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             {t('privacyTitle')}
           </h1>
-          <p className="text-xl text-white/90">
-            {t('privacySubtitle')}
-          </p>
+          <p className="text-xl text-white/90">{t('privacySubtitle')}</p>
         </div>
       </section>
 
@@ -63,16 +87,14 @@ const PrivacyPolicyPage: React.FC = () => {
             </h2>
             <div className="prose prose-invert max-w-none">
               <p className="text-text-muted leading-relaxed text-lg">
-                {isRTL 
+                {isRTL
                   ? 'في SyrianVisions، نحن ملتزمون بحماية خصوصيتك والحفاظ على أمان معلوماتك الشخصية. تشرح هذه السياسة كيف نجمع ونستخدم ونحمي المعلومات التي تقدمها لنا عند استخدام موقعنا أو خدماتنا.'
-                  : 'At SyrianVisions, we are committed to protecting your privacy and keeping your personal information secure. This policy explains how we collect, use, and protect the information you provide to us when using our website or services.'
-                }
+                  : 'At SyrianVisions, we are committed to protecting your privacy and keeping your personal information secure. This policy explains how we collect, use, and protect the information you provide when using our website or services.'}
               </p>
               <p className="text-text-muted leading-relaxed">
                 {isRTL
                   ? 'آخر تحديث: يناير 2025. نحتفظ بالحق في تحديث هذه السياسة من وقت لآخر.'
-                  : 'Last updated: January 2025. We reserve the right to update this policy from time to time.'
-                }
+                  : 'Last updated: January 2025. We reserve the right to update this policy from time to time.'}
               </p>
             </div>
           </div>
@@ -108,10 +130,9 @@ const PrivacyPolicyPage: React.FC = () => {
                 {isRTL ? 'تواصل معنا' : 'Contact Us'}
               </h2>
               <p className="text-text-muted mb-6 leading-relaxed">
-                {isRTL 
+                {isRTL
                   ? 'إذا كان لديك أي أسئلة حول سياسة الخصوصية هذه أو كيفية تعاملنا مع معلوماتك الشخصية، يرجى عدم التردد في التواصل معنا.'
-                  : 'If you have any questions about this privacy policy or how we handle your personal information, please do not hesitate to contact us.'
-                }
+                  : 'If you have any questions about this privacy policy or how we handle your personal information, please don’t hesitate to contact us.'}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
@@ -120,20 +141,13 @@ const PrivacyPolicyPage: React.FC = () => {
                 >
                   support@syrianvisions.com
                 </a>
-                <a
-                  href="tel:+963xxxxxxxxx"
-                  className="btn-secondary px-6 py-3 rounded-full font-semibold hover:transform hover:-translate-y-1 transition-all"
-                >
-                  Facebook
-                </a>
               </div>
-              
+
               <div className="mt-8 pt-6 border-t border-border-color">
                 <p className="text-sm text-text-muted">
-                  {isRTL 
+                  {isRTL
                     ? 'SyrianVisions -  تطوير مواقع الويب'
-                    : 'SyrianVisions - Web Development Studio'
-                  }
+                    : 'SyrianVisions - Web Development Studio'}
                 </p>
               </div>
             </div>

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ExternalLink, Github, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { Helmet } from 'react-helmet-async';
+import Seo from '../components/Seo';
 
 interface Project {
   id: number;
@@ -8,7 +10,7 @@ interface Project {
   titleEn: string;
   description: string;
   descriptionEn: string;
-  category: string;
+  category: 'web' | 'mobile' | 'design';
   technologies: string[];
   image: string;
   link?: string;
@@ -18,7 +20,14 @@ interface Project {
 const WorkPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'web' | 'mobile' | 'design'>('all');
+
+  const lang = isRTL ? 'ar' : 'en';
+  const dir = isRTL ? 'rtl' : 'ltr';
+  const title = isRTL ? 'أعمالنا – Syrian Visions' : 'Our Work – Syrian Visions';
+  const desc = isRTL
+    ? 'استعرض مشاريع الويب والتطبيقات والتصميم التي أنجزناها.'
+    : 'Browse our recent web, app, and design projects.';
 
   const projects: Project[] = [
     {
@@ -89,15 +98,14 @@ const WorkPage: React.FC = () => {
   ];
 
   const filters = [
-    { key: 'all', label: 'الكل', labelEn: 'All Projects' },
-    { key: 'web', label: 'مواقع ويب', labelEn: 'Web Projects' },
-    { key: 'mobile', label: 'تطبيقات جوال', labelEn: 'Mobile Apps' },
-    { key: 'design', label: 'تصاميم', labelEn: 'Design Projects' }
+    { key: 'all' as const, label: 'الكل', labelEn: 'All Projects' },
+    { key: 'web' as const, label: 'مواقع ويب', labelEn: 'Web Projects' },
+    { key: 'mobile' as const, label: 'تطبيقات جوال', labelEn: 'Mobile Apps' },
+    { key: 'design' as const, label: 'تصاميم', labelEn: 'Design Projects' }
   ];
 
-  const filteredProjects = activeFilter === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
+  const filteredProjects =
+    activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
 
   const openModal = (project: Project) => {
     setSelectedProject(project);
@@ -109,8 +117,24 @@ const WorkPage: React.FC = () => {
     document.body.style.overflow = 'unset';
   };
 
+  // Lukke med Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && selectedProject && closeModal();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedProject]);
+
   return (
     <div className="pt-20">
+      {/* språk/retning */}
+      <Helmet htmlAttributes={{ lang, dir }} />
+      {/* SEO for /work */}
+      <Seo
+        title={title}
+        description={desc}
+        path="/work"
+      />
+
       {/* Hero Section */}
       <section className="py-20 gradient-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -122,8 +146,8 @@ const WorkPage: React.FC = () => {
           </p>
 
           {/* Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
-            {filters.map(filter => (
+          <div className="flex flex-wrap justify-center gap-4" role="tablist" aria-label="Project filters">
+            {filters.map((filter) => (
               <button
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
@@ -132,6 +156,8 @@ const WorkPage: React.FC = () => {
                     ? 'bg-white text-primary font-semibold'
                     : 'bg-white/20 text-white hover:bg-white/30'
                 }`}
+                role="tab"
+                aria-selected={activeFilter === filter.key}
               >
                 {isRTL ? filter.label : filter.labelEn}
               </button>
@@ -144,7 +170,7 @@ const WorkPage: React.FC = () => {
       <section className="py-20 bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map(project => (
+            {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="glass-card rounded-xl overflow-hidden hover:transform hover:-translate-y-2 transition-all duration-300 cursor-pointer group"
@@ -155,19 +181,34 @@ const WorkPage: React.FC = () => {
                     src={project.image}
                     alt={isRTL ? project.title : project.titleEn}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute bottom-4 left-4 right-4">
                       <div className="flex space-x-2 rtl:space-x-reverse">
                         {project.link && (
-                          <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
+                            onClick={(e) => e.stopPropagation()}
+                            aria-label="Open live site"
+                          >
                             <ExternalLink className="w-4 h-4 text-white" />
-                          </div>
+                          </a>
                         )}
                         {project.github && (
-                          <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
+                            onClick={(e) => e.stopPropagation()}
+                            aria-label="Open GitHub repo"
+                          >
                             <Github className="w-4 h-4 text-white" />
-                          </div>
+                          </a>
                         )}
                       </div>
                     </div>
@@ -178,11 +219,11 @@ const WorkPage: React.FC = () => {
                   <h3 className="text-xl font-bold text-white mb-3">
                     {isRTL ? project.title : project.titleEn}
                   </h3>
-                  
+
                   <p className="text-text-muted mb-4 line-clamp-2">
                     {isRTL ? project.description : project.descriptionEn}
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.slice(0, 3).map((tech, index) => (
                       <span
@@ -207,14 +248,21 @@ const WorkPage: React.FC = () => {
 
       {/* Project Modal */}
       {selectedProject && (
-        <div className="lightbox-overlay" onClick={closeModal}>
-          <div 
-            className="max-w-4xl mx-auto bg-primary rounded-2xl overflow-hidden shadow-heavy"
-            onClick={e => e.stopPropagation()}
+        <div
+          className="lightbox-overlay"
+          onClick={closeModal}
+          role="dialog"
+          aria-modal="true"
+          aria-label={isRTL ? 'تفاصيل المشروع' : 'Project details'}
+        >
+          <div
+            className="max-w-4xl mx-auto bg-primary rounded-2xl overflow-hidden shadow-heavy relative"
+            onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/40 transition-colors z-10"
+              className="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg.black/40 transition-colors z-10"
+              aria-label={isRTL ? 'إغلاق' : 'Close'}
             >
               <X className="w-5 h-5" />
             </button>
@@ -224,12 +272,13 @@ const WorkPage: React.FC = () => {
                 src={selectedProject.image}
                 alt={isRTL ? selectedProject.title : selectedProject.titleEn}
                 className="w-full h-64 object-cover"
+                loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
 
             <div className="p-8">
-              <div className="flex items-start justify-between mb-6">
+              <div className="flex items-start justify-between mb-6 gap-4">
                 <div>
                   <h2 className="text-3xl font-bold text-white mb-2">
                     {isRTL ? selectedProject.title : selectedProject.titleEn}
@@ -246,7 +295,8 @@ const WorkPage: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-                      onClick={e => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label="Open live site"
                     >
                       <ExternalLink className="w-5 h-5 text-white" />
                     </a>
@@ -257,9 +307,10 @@ const WorkPage: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-                      onClick={e => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label="Open GitHub repo"
                     >
-                      <Github className="w-5 h-5 text-white" />
+                      <Github className="w-5 h-5 text.white" />
                     </a>
                   )}
                 </div>
