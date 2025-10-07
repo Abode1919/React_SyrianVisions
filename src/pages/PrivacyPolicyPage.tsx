@@ -65,7 +65,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Seo title={title} description={desc} path="/privacy" />
 
       {/* Hero Section */}
-      <section className="py-20 gradient-primary">
+      <section className="gradient-primary pt-20 min-h-[calc(100vh-5rem)] flex items-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Shield className="w-8 h-8 text-white" />

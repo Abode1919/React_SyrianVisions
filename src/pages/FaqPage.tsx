@@ -48,9 +48,9 @@ const FaqPage: React.FC = () => {
       question: 'ما هي طرق الدفع المتاحة؟',
       questionEn: 'What payment methods are available?',
       answer:
-        'نقبل الدفع عبر التحويل البنكي، PayPal، والعملات المشفرة. كما نوفر خطط دفع مرنة للمشاريع الكبيرة.',
+        'التحويل البنكي، باي بال، أو أي وسيلة دفع تناسب العميل. تتوفر خطط دفع مرنة للمشاريع الكبيرة.',
       answerEn:
-        'Bank transfer, PayPal, and crypto. Flexible payment plans are available for larger projects.'
+        'Bank transfer, PayPal, and whatever the customer is comfortable with. Flexible payment plans are available for larger projects.'
     },
     {
       question: 'هل المواقع متجاوبة مع الأجهزة المحمولة؟',
@@ -106,7 +106,7 @@ const FaqPage: React.FC = () => {
 
       <div className="pt-20">
         {/* Hero */}
-        <section className="py-20 gradient-primary">
+        <section className="gradient-primary pt-20 min-h-[calc(100vh-5rem)] flex items-center">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <HelpCircle className="w-8 h-8 text-white" />
@@ -178,6 +178,7 @@ const FaqPage: React.FC = () => {
                   >
                     {isRTL ? 'راسلنا عبر الإيميل' : 'Email Us'}
                   </a>
+
                 </div>
               </div>
             </div>

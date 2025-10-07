@@ -129,7 +129,7 @@ const WorkPage: React.FC = () => {
 
       <div className="pt-20">
         {/* Hero */}
-        <section className="py-20 gradient-primary">
+        <section className="gradient-primary pt-20 min-h-[calc(100vh-5rem)] flex items-center">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
               {isRTL ? 'ماذا نبني' : 'What we build'}
