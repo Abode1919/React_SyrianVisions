@@ -1,341 +1,395 @@
 import React, { useEffect, useState } from 'react';
-import { ExternalLink, Github, X } from 'lucide-react';
+import { ArrowRight, CheckCircle, Workflow, Cpu, Trophy } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import Reveal from '../components/anim/Reveal';
 import { Helmet } from 'react-helmet-async';
 import Seo from '../components/Seo';
 
-interface Project {
-  id: number;
-  title: string;
-  titleEn: string;
-  description: string;
-  descriptionEn: string;
-  category: 'web' | 'mobile' | 'design';
-  technologies: string[];
-  image: string;
-  link?: string;
-  github?: string;
-}
+/** ---------- Lightweight Lightbox (inline) ---------- */
+type GalleryImage = { src: string; alt?: string };
+const LightboxGallery: React.FC<{
+  images: GalleryImage[];
+  isOpen: boolean;
+  onClose: () => void;
+  startIndex?: number;
+  isRTL?: boolean;
+}> = ({ images, isOpen, onClose, startIndex = 0, isRTL }) => {
+  const [index, setIndex] = useState(startIndex);
+
+  useEffect(() => { setIndex(startIndex); }, [startIndex, isOpen]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') (isRTL ? prev() : next());
+      if (e.key === 'ArrowLeft') (isRTL ? next() : prev());
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, index, isRTL]);
+
+  const next = () => setIndex(i => (i + 1) % images.length);
+  const prev = () => setIndex(i => (i - 1 + images.length) % images.length);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col"
+      role="dialog" aria-modal="true"
+      onClick={onClose}
+    >
+      {/* top bar */}
+      <div className="flex items-center justify-between p-3 text-white">
+        <div className="text-sm opacity-80">{index + 1} / {images.length}</div>
+        <button onClick={onClose} className="px-3 py-1 rounded bg-white/10 hover:bg-white/20">×</button>
+      </div>
+
+      {/* main image */}
+      <div className="flex-1 flex items-center justify-center px-3" onClick={e => e.stopPropagation()}>
+        <button onClick={isRTL ? next : prev} className="px-3 py-2 text-white/80 hover:text-white select-none">‹</button>
+        <img
+          src={images[index].src}
+          alt={images[index].alt || `image-${index + 1}`}
+          className="max-h-[72vh] max-w-[92vw] object-contain rounded-lg shadow-xl border border-white/10"
+          loading="eager"
+        />
+        <button onClick={isRTL ? prev : next} className="px-3 py-2 text-white/80 hover:text-white select-none">›</button>
+      </div>
+
+      {/* thumbs */}
+      <div className="p-3 overflow-x-auto bg-black/50" onClick={e => e.stopPropagation()}>
+        <div className="flex gap-2">
+          {images.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className={`border ${i === index ? 'border-white' : 'border-white/20'} rounded overflow-hidden`}
+            >
+              <img src={img.src} alt={img.alt || `thumb-${i + 1}`} className="h-16 w-24 object-cover" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+/** --------------------------------------------------- */
 
 const WorkPage: React.FC = () => {
-  const { t, isRTL } = useLanguage();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'web' | 'mobile' | 'design'>('all');
+  const { isRTL } = useLanguage();
 
   const lang = isRTL ? 'ar' : 'en';
   const dir = isRTL ? 'rtl' : 'ltr';
+
   const title = isRTL ? 'أعمالنا – Syrian Visions' : 'Our Work – Syrian Visions';
   const desc = isRTL
-    ? 'استعرض مشاريع الويب والتطبيقات والتصميم التي أنجزناها.'
-    : 'Browse our recent web, app, and design projects.';
+    ? 'نبني ما تحتاجه فعلاً: مواقع حديثة، تكاملات عملية، دعم مرن—وتضمين أنظمة نقاط بيع (POS) للمطاعم. تسعير عادل حسب نطاق العمل.'
+    : 'We build what you actually need: modern sites, practical integrations, flexible support—and POS systems for restaurants. Fair, scope-based pricing.';
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'موقع شركة تجارية',
-      titleEn: 'Corporate Website',
-      description: 'موقع شركة تجارية متعدد الصفحات مع نظام إدارة محتوى',
-      descriptionEn: 'Multi-page corporate website with content management system',
-      category: 'web',
-      technologies: ['React', 'Node.js', 'MongoDB'],
-      image: 'https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg?auto=compress&cs=tinysrgb&w=800',
-      link: '#',
-      github: '#'
-    },
-    {
-      id: 2,
-      title: 'تطبيق إدارة المهام',
-      titleEn: 'Task Management App',
-      description: 'تطبيق لإدارة المهام والمشاريع مع واجهة سهلة الاستخدام',
-      descriptionEn: 'Task and project management app with user-friendly interface',
-      category: 'mobile',
-      technologies: ['React Native', 'Firebase'],
-      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=800',
-      link: '#'
-    },
-    {
-      id: 3,
-      title: 'متجر إلكتروني',
-      titleEn: 'E-commerce Store',
-      description: 'متجر إلكتروني متكامل مع نظام دفع آمن وإدارة مخزون',
-      descriptionEn: 'Complete e-commerce store with secure payment and inventory management',
-      category: 'web',
-      technologies: ['Next.js', 'Stripe', 'PostgreSQL'],
-      image: 'https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800',
-      link: '#'
-    },
-    {
-      id: 4,
-      title: 'هوية بصرية متكاملة',
-      titleEn: 'Complete Brand Identity',
-      description: 'تصميم هوية بصرية متكاملة تشمل الشعار والألوان والخطوط',
-      descriptionEn: 'Complete brand identity design including logo, colors, and fonts',
-      category: 'design',
-      technologies: ['Figma', 'Adobe Illustrator', 'Photoshop'],
-      image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800'
-    },
-    {
-      id: 5,
-      title: 'منصة تعليمية',
-      titleEn: 'Learning Platform',
-      description: 'منصة تعليمية تفاعلية مع نظام إدارة الطلاب والمدرسين',
-      descriptionEn: 'Interactive learning platform with student and teacher management system',
-      category: 'web',
-      technologies: ['Vue.js', 'Laravel', 'MySQL'],
-      image: 'https://images.pexels.com/photos/267507/pexels-photo-267507.jpeg?auto=compress&cs=tinysrgb&w=800',
-      link: '#'
-    },
-    {
-      id: 6,
-      title: 'تطبيق توصيل طعام',
-      titleEn: 'Food Delivery App',
-      description: 'تطبيق لتوصيل الطعام مع نظام تتبع الطلبات',
-      descriptionEn: 'Food delivery app with order tracking system',
-      category: 'mobile',
-      technologies: ['Flutter', 'Firebase', 'Google Maps'],
-      image: 'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800'
-    }
-  ];
-
-  const filters = [
-    { key: 'all' as const, label: 'الكل', labelEn: 'All Projects' },
-    { key: 'web' as const, label: 'مواقع ويب', labelEn: 'Web Projects' },
-    { key: 'mobile' as const, label: 'تطبيقات جوال', labelEn: 'Mobile Apps' },
-    { key: 'design' as const, label: 'تصاميم', labelEn: 'Design Projects' }
-  ];
-
-  const filteredProjects =
-    activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter);
-
-  const openModal = (project: Project) => {
-    setSelectedProject(project);
-    document.body.style.overflow = 'hidden';
+  const scrollToContact = () => {
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    else window.location.href = '/#contact';
   };
 
-  const closeModal = () => {
-    setSelectedProject(null);
-    document.body.style.overflow = 'unset';
-  };
+  /** ------- Galleries (5 images each; add your files in public/pictures/...) ------- */
+    const restaurantImages: GalleryImage[] = [
+    { src: '/Resturant/rest1.png',  alt: isRTL ? 'واجهة مطعم' : 'Restaurant UI' },
+    { src: '/Resturant/meny.png',   alt: isRTL ? 'قائمة طعام' : 'Menu page' },
+    { src: '/Resturant/Gallery.png',alt: isRTL ? 'حجز طاولات' : 'Table booking' },
+    { src: '/Resturant/CTA.png',    alt: isRTL ? 'فاتورة رقمية' : 'Digital receipt' },
+  ];
 
-  // Lukke med Escape
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && selectedProject && closeModal();
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [selectedProject]);
+  const hotelImages: GalleryImage[] = [
+    { src: 'Hotell/HotellBG.png', alt: isRTL ? 'غرف الفندق' : 'Hotel rooms gallery' },
+    { src: 'Hotell/HotellSek.png', alt: isRTL ? 'محرك الحجز' : 'Booking engine' },
+    { src: 'Hotell/HotellSek2.png', alt: isRTL ? 'عروض وباقات' : 'Offers & packages' },
+    { src: 'Hotell/HotellSek3.png', alt: isRTL ? 'مراجعات وموقع' : 'Reviews & map' },
+    { src: 'Hotell/HotellCTA.png', alt: isRTL ? 'صفحة رئيسية' : 'Homepage layout' },
+  ];
+
+  const salonImages: GalleryImage[] = [
+    { src: '/Barber/BarberBG.png', alt: isRTL ? 'حجز مواعيد' : 'Appointment booking' },
+    { src: '/Barber/BarberSek.png', alt: isRTL ? 'قائمة الخدمات' : 'Services & pricing' },
+    { src: '/Barber/BarberSek2.png', alt: isRTL ? 'قبل/بعد' : 'Before/after gallery' },
+    { src: '/Barber/BarberSek4.png', alt: isRTL ? 'التواصل واتساب' : 'WhatsApp chat' },
+    { src: '/Barber/BarberCTA.png', alt: isRTL ? 'الصفحة الرئيسية' : 'Landing page' },
+  ];
+
+  const [openR, setOpenR] = useState(false);
+  const [openH, setOpenH] = useState(false);
+  const [openS, setOpenS] = useState(false);
 
   return (
-    <div className="pt-20">
-      {/* språk/retning */}
+    <Reveal>
       <Helmet htmlAttributes={{ lang, dir }} />
-      {/* SEO for /work */}
-      <Seo
-        title={title}
-        description={desc}
-        path="/work"
-      />
+      <Seo title={title} description={desc} path="/work" />
 
-      {/* Hero Section */}
-      <section className="py-20 gradient-primary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            {t('workTitle')}
-          </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto mb-8">
-            {t('workSubtitle')}
-          </p>
+      <div className="pt-20">
+        {/* Hero */}
+        <section className="py-20 gradient-primary">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              {isRTL ? 'ماذا نبني' : 'What we build'}
+            </h1>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              {isRTL
+                ? 'قصتك وهويتك وموقعك—مصمّمون بعناية.'
+                : 'Your story, your brand, your site—crafted with care.'}
+            </p>
 
-          {/* Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-4" role="tablist" aria-label="Project filters">
-            {filters.map((filter) => (
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                key={filter.key}
-                onClick={() => setActiveFilter(filter.key)}
-                className={`px-6 py-3 rounded-full transition-all duration-300 ${
-                  activeFilter === filter.key
-                    ? 'bg-white text-primary font-semibold'
-                    : 'bg-white/20 text-white hover:bg-white/30'
-                }`}
-                role="tab"
-                aria-selected={activeFilter === filter.key}
+                onClick={scrollToContact}
+                className="btn-primary px-8 py-4 rounded-full text-white font-semibold flex items-center justify-center gap-2"
               >
-                {isRTL ? filter.label : filter.labelEn}
+                {isRTL ? 'ابدأ محادثة' : 'Start a conversation'}
+                <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
               </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Grid */}
-      <section className="py-20 bg-primary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="glass-card rounded-xl overflow-hidden hover:transform hover:-translate-y-2 transition-all duration-300 cursor-pointer group"
-                onClick={() => openModal(project)}
+              <a
+                href="mailto:support@syrianvisions.com"
+                className="btn-secondary px-8 py-4 rounded-full font-semibold"
               >
-                <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={isRTL ? project.title : project.titleEn}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="flex space-x-2 rtl:space-x-reverse">
-                        {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
-                            onClick={(e) => e.stopPropagation()}
-                            aria-label="Open live site"
-                          >
-                            <ExternalLink className="w-4 h-4 text-white" />
-                          </a>
-                        )}
-                        {project.github && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
-                            onClick={(e) => e.stopPropagation()}
-                            aria-label="Open GitHub repo"
-                          >
-                            <Github className="w-4 h-4 text-white" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-3">
-                    {isRTL ? project.title : project.titleEn}
-                  </h3>
-
-                  <p className="text-text-muted mb-4 line-clamp-2">
-                    {isRTL ? project.description : project.descriptionEn}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-accent-color/20 text-accent-color text-xs rounded-full"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="px-2 py-1 bg-text-muted/20 text-text-muted text-xs rounded-full">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <div
-          className="lightbox-overlay"
-          onClick={closeModal}
-          role="dialog"
-          aria-modal="true"
-          aria-label={isRTL ? 'تفاصيل المشروع' : 'Project details'}
-        >
-          <div
-            className="max-w-4xl mx-auto bg-primary rounded-2xl overflow-hidden shadow-heavy relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg.black/40 transition-colors z-10"
-              aria-label={isRTL ? 'إغلاق' : 'Close'}
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="relative">
-              <img
-                src={selectedProject.image}
-                alt={isRTL ? selectedProject.title : selectedProject.titleEn}
-                className="w-full h-64 object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                {isRTL ? 'عرض سعر مخصّص' : 'Get a custom quote'}
+              </a>
             </div>
+          </div>
+        </section>
 
-            <div className="p-8">
-              <div className="flex items-start justify-between mb-6 gap-4">
-                <div>
-                  <h2 className="text-3xl font-bold text-white mb-2">
-                    {isRTL ? selectedProject.title : selectedProject.titleEn}
-                  </h2>
-                  <p className="text-text-muted text-lg">
-                    {isRTL ? selectedProject.description : selectedProject.descriptionEn}
-                  </p>
-                </div>
+        {/* Industries / Bransjer vi hjelper */}
+        <section id="restaurants" className="py-20 bg-primary">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-white mb-10 text-center">
+              {isRTL ? 'قطاعات نخدمها' : 'Industries we serve'}
+            </h2>
 
-                <div className="flex space-x-4 rtl:space-x-reverse">
-                  {selectedProject.link && (
-                    <a
-                      href={selectedProject.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-                      onClick={(e) => e.stopPropagation()}
-                      aria-label="Open live site"
-                    >
-                      <ExternalLink className="w-5 h-5 text-white" />
-                    </a>
-                  )}
-                  {selectedProject.github && (
-                    <a
-                      href={selectedProject.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-                      onClick={(e) => e.stopPropagation()}
-                      aria-label="Open GitHub repo"
-                    >
-                      <Github className="w-5 h-5 text.white" />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">
-                  {isRTL ? 'التقنيات المستخدمة:' : 'Technologies Used:'}
+            {/* Restaurant (text left, image right) */}
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-16">
+              <div className={isRTL ? 'order-2 lg:order-1' : 'order-1'}>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                  {isRTL ? 'مطاعم' : 'Restaurants'}
                 </h3>
-                <div className="flex flex-wrap gap-3">
-                  {selectedProject.technologies.map((tech, index) => (
-                    <span
-                      key={index}
-                      className="px-4 py-2 bg-accent-color/20 text-accent-color rounded-full font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                <p className="text-text-muted text-lg leading-relaxed">
+                  {isRTL
+                    ? 'نُنشئ مواقع أنيقة وعملية للمطاعم: قائمة طعام جذّابة، حجز طاولات، خرائط وجداول، وربط مع نظام نقاط البيع (POS) للطلبات والفواتير والتقارير—كل ذلك بسرعة وأداء عالٍ.'
+                    : 'We craft beautiful, practical restaurant websites: gorgeous menus, table booking, maps & schedules, and POS integrations for orders, receipts, and reports—fast and reliable.'}
+                </p>
+                <div className="mt-6 flex gap-4">
+                  <button onClick={() => setOpenR(true)} className="btn-secondary px-6 py-3 rounded-full font-semibold">
+                    {isRTL ? 'شاهد الأمثلة' : 'View examples'}
+                  </button>
+                </div>
+              </div>
+              <div className={isRTL ? 'order-1 lg:order-2' : 'order-2'}>
+                <figure className="rounded-2xl overflow-hidden shadow-heavy border border-white/10">
+                  <button onClick={() => setOpenR(true)} className="block w-full text-left focus:outline-none">
+                    <img
+                      src="/Resturant/rest1.png"
+                      alt={isRTL ? 'موقع مطعم' : 'Restaurant website'}
+                      loading="lazy"
+                      className="w-full h-[340px] md:h-[420px] object-cover"
+                      width={1600}
+                      height={1067}
+                    />
+                  </button>
+                </figure>
+              </div>
+            </div>
+
+            {/* Hotel (image left, text right) */}
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-16">
+              <div className={isRTL ? 'order-1' : 'order-1 lg:order-1'}>
+                <figure className="rounded-2xl overflow-hidden shadow-heavy border border-white/10">
+                  <button onClick={() => setOpenH(true)} className="block w-full text-left focus:outline-none">
+                    <img
+                      src="/Hotell/HotellBG.png"
+                      alt={isRTL ? 'موقع فندق' : 'Hotel website'}
+                      loading="lazy"
+                      className="w-full h-[340px] md:h-[420px] object-cover"
+                      width={1600}
+                      height={1067}
+                    />
+                  </button>
+                </figure>
+              </div>
+              <div className={isRTL ? 'order-2' : 'order-2 lg:order-2'}>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                  {isRTL ? 'فنادق' : 'Hotels'}
+                </h3>
+                <p className="text-text-muted text-lg leading-relaxed">
+                  {isRTL
+                    ? 'نُصمّم مواقع فنادق أنيقة وسهلة الاستخدام مع كل ما يحتاجه الفندق: معرض غرف، محرك حجز، باقات وعروض، خرائط ومراجعات—متوافقة مع الجوال وسريعة التحميل.'
+                    : 'We design elegant, easy-to-use hotel websites with everything you need: room galleries, booking engine, packages & offers, maps and reviews—mobile-friendly and fast.'}
+                </p>
+                <div className="mt-6 flex gap-4">
+                  <button onClick={() => setOpenH(true)} className="btn-secondary px-6 py-3 rounded-full font-semibold">
+                    {isRTL ? 'شاهد الأمثلة' : 'View examples'}
+                  </button>
                 </div>
               </div>
             </div>
+
+            {/* Salon (text left, image right) */}
+            <div className="grid lg:grid-cols-2 gap-10 items-center">
+              <div className={isRTL ? 'order-2 lg:order-1' : 'order-1'}>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                  {isRTL ? 'صالونات الحلاقة والتجميل' : 'Hair Salons & Barbers'}
+                </h3>
+                <p className="text-text-muted text-lg leading-relaxed">
+                  {isRTL
+                    ? 'ننشئ مواقع لصالونات الحلاقة والتجميل مع نظام حجز مواعيد بسيط، عرض قائمة الخدمات والأسعار، صور قبل/بعد، وربط واتساب للتواصل المباشر.'
+                    : 'We build salon websites with simple appointment booking, clear service lists & pricing, before/after galleries, and WhatsApp handoff for quick chats.'}
+                </p>
+                <div className="mt-6 flex gap-4">
+                  <button onClick={() => setOpenS(true)} className="btn-secondary px-6 py-3 rounded-full font-semibold">
+                    {isRTL ? 'شاهد الأمثلة' : 'View examples'}
+                  </button>
+                </div>
+              </div>
+              <div className={isRTL ? 'order-1 lg:order-2' : 'order-2'}>
+                <figure className="rounded-2xl overflow-hidden shadow-heavy border border-white/10">
+                  <button onClick={() => setOpenS(true)} className="block w-full text-left focus:outline-none">
+                    <img
+                      src="/Barber/BarberBG.png"
+                      alt={isRTL ? 'موقع صالون' : 'Salon website'}
+                      loading="lazy"
+                      className="w-full h-[340px] md:h-[420px] object-cover"
+                      width={1600}
+                      height={1067}
+                    />
+                  </button>
+                </figure>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        </section>
+
+
+        {/* Process */}
+        <section className="py-20 bg-secondary">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+              <Workflow className="w-6 h-6 text-accent-color" />
+              {isRTL ? 'العملية' : 'Process'}
+            </h2>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  t: isRTL ? 'استكشاف' : 'Discover',
+                  p: isRTL ? 'نستمع، نحدّد الهدف، ونضع نطاقًا واضحًا.' : 'We listen, define goals, and agree on a clear scope.',
+                },
+                {
+                  t: isRTL ? 'تصميم + تطوير' : 'Design + Build',
+                  p: isRTL ? 'تصميم نظيف وتجربة سلسة، مع تطوير سريع وأساسيات SEO.' : 'Clean design and smooth UX, with fast dev and SEO essentials.',
+                },
+                {
+                  t: isRTL ? 'إطلاق + دعم' : 'Launch + Support',
+                  p: isRTL ? 'إطلاق منظم، ثم دعم فعلي وصيانة مرنة عند الحاجة.' : 'Structured launch, then real support and optional maintenance.',
+                },
+              ].map((step, i) => (
+                <div key={i} className="glass-card rounded-xl p-6">
+                  <div className="text-accent-color font-semibold mb-2">{String(i + 1).padStart(2, '0')}</div>
+                  <h3 className="text-xl font-bold text-white mb-2">{step.t}</h3>
+                  <p className="text-text-muted">{step.p}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* Capabilities */}
+        <section className="py-20 bg-primary">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-white mb-8">
+              {isRTL ? 'قدراتنا' : 'Capabilities'}
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                isRTL ? 'مواقع سريعة وحديثة، متجاوبة وجاهزة للـSEO.' : 'Fast, modern, responsive websites—SEO-ready.',
+                isRTL ? 'تصميم نظيف ومخصّص متوافق مع الهوية.' : 'Clean, custom design aligned with your brand.',
+                isRTL ? 'تكاملات عملية (دفع، حجز، CRM، واتساب...).' : 'Practical integrations (payments, booking, CRM, WhatsApp, etc.).',
+                isRTL ? 'نظام نقاط بيع للمطاعم (POS): طلبات، طاولات، فواتير، تقارير.' : 'Restaurant POS: orders, tables, receipts, reports.',
+                isRTL ? 'أساسيات SEO: عناوين/أوصاف، خريطة موقع، روابط نظيفة.' : 'SEO essentials: titles/descriptions, sitemap, clean URLs.',
+                isRTL ? 'دعم بعد الإطلاق وخطط صيانة مرنة (اختيارية).' : 'Post-launch support and flexible, optional maintenance.',
+              ].map((text, i) => (
+                <div key={i} className="glass-card rounded-xl p-6 flex items-start gap-4">
+                  <CheckCircle className="w-6 h-6 text-accent-color mt-1 flex-shrink-0" />
+                  <p className="text-text-muted text-lg">{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        
+
+  
+        {/* Results / Promises */}
+        <section className="py-20 bg-secondary">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+              <Trophy className="w-6 h-6 text-accent-color" />
+              {isRTL ? 'نتائج نلتزم بها' : 'Results we aim for'}
+            </h2>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                isRTL ? 'مؤشرات الويب الأساسية: هدفنا الافتراضي هو مستوى "جيد".' : 'Core Web Vitals “Good” as our default target.',
+                isRTL ? 'أساسيات SEO: عناوين/أوصاف، خريطة موقع، روابط نظيفة.' : 'SEO essentials: titles/descriptions, sitemap, clean URLs.',
+                isRTL ? 'استجابة لتحديثات بسيطة خلال 48–72 ساعة.' : '48–72h turnaround on minor updates.',
+              ].map((text, i) => (
+                <div key={i} className="glass-card rounded-xl p-6">
+                  <p className="text-text-muted text-lg">{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* CTA */}
+        <section className="py-20 bg-primary">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="glass-card rounded-2xl p-12">
+              <h2 className="text-3xl font-bold text-white mb-4">
+                {isRTL ? 'جاهز نبدأ؟' : 'Ready to get started?'}
+              </h2>
+              <p className="text-xl text-text-muted mb-8">
+                {isRTL
+                  ? 'مكالمة تحديد نطاق مجانية وبدون التزام.'
+                  : 'Free, no-pressure scoping call.'}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={scrollToContact}
+                  className="btn-primary px-8 py-4 rounded-full text-white font-semibold flex items-center justify-center gap-2"
+                >
+                  {isRTL ? 'تواصل معنا' : 'Start a conversation'}
+                  <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+                </button>
+                <a
+                  href="mailto:support@syrianvisions.com"
+                  className="btn-secondary px-8 py-4 rounded-full font-semibold"
+                >
+                  {isRTL ? 'عرض سعر مخصّص' : 'Get a custom quote'}
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Lightboxes */}
+      <LightboxGallery images={restaurantImages} isOpen={openR} onClose={() => setOpenR(false)} isRTL={isRTL} />
+      <LightboxGallery images={hotelImages}      isOpen={openH} onClose={() => setOpenH(false)} isRTL={isRTL} />
+      <LightboxGallery images={salonImages}      isOpen={openS} onClose={() => setOpenS(false)} isRTL={isRTL} />
+    </Reveal>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Zap, Shield, Heart, ShieldCheck } from 'lucide-react';
+import { Check, Zap, Heart, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 const SplitSection: React.FC = () => {
