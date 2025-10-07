@@ -43,15 +43,66 @@ const AboutUsPage: React.FC = () => {
       <div className="pt-20">
         {/* Hero */}
         <section className="gradient-primary pt-20 min-h-[calc(100vh-5rem)] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              {t('aboutTitle')}
-            </h1>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              {t('aboutSubtitle')}
-            </p>
+          <div className="w-full">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                {t('aboutTitle')}
+              </h1>
+
+              <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8">
+                {isRTL
+                  ? 'نحن فريق صغير ومركّز نبني مواقع حديثة فعّالة — سريعة، أنيقة، وسهلة الإدارة.'
+                  : 'We’re a small, focused team building modern websites that actually deliver — fast, polished, and easy to run.'}
+              </p>
+
+              {/* CTAer */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <a href="/#contact" className="btn-primary px-7 py-4 rounded-full text-white font-semibold">
+                  {isRTL ? 'تواصل معنا' : 'Start a conversation'}
+                </a>
+                <a href="/work" className="btn-secondary px-7 py-4 rounded-full font-semibold">
+                  {isRTL ? 'شاهد أعمالنا' : 'See our work'}
+                </a>
+              </div>
+
+              {/* Tillitsrad */}
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/80 text-sm md:text-base">
+                <span> {isRTL ? 'تسليم سريع' : 'Fast delivery'}</span>
+                <span className="opacity-40">•</span>
+                <span> {isRTL ? 'تصميم مخصّص' : 'Custom design'}</span>
+                <span className="opacity-40">•</span>
+                <span> {isRTL ? 'أمان ودعم' : 'Secure & supported'}</span>
+              </div>
+
+              {/* Team-collage (valgfritt) */}
+              <div className="mt-8 flex items-center justify-center -space-x-3 rtl:space-x-reverse">
+                {[moussaImg, abdoImg, ibrahimImg].map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt="team"
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-full ring-2 ring-white/20 object-cover"
+                    loading="lazy"
+                  />
+                ))}
+                <span className="ms-4 text-white/70 text-sm">
+                  {isRTL ? 'فريق ودود جاهز لمساعدتك' : 'Friendly team ready to help'}
+                </span>
+              </div>
+
+              {/* Scroll-hint */}
+              <div className="mt-10 opacity-70">
+                <a href="#mission" className="inline-flex flex-col items-center text-white/80 hover:text-white transition">
+                  <span className="text-sm">{isRTL ? 'تابع للأسفل' : 'Scroll down'}</span>
+                  <svg className="w-5 h-5 mt-1 animate-bounce" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
         </section>
+
 
         {/* Mission */}
         <section className="py-20 bg-primary">
