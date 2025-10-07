@@ -9,23 +9,23 @@ type Teaser = {
   titleEn: string;
   desc: string;
   descEn: string;
-  img: string;      // public/ path
-  hash: string;     // target hash on /work
+  img: string; // public/ path
 };
 
 const PortfolioSection: React.FC = () => {
   const { isRTL } = useLanguage();
 
-  // Three teaser tiles that point to sections on WorkPage
+  // 👉 én kilde til sannhet for Work-sida (samme som CTA)
+  const WORK_URL = '/Work';
+
   const teasers: Teaser[] = [
     {
       id: 'restaurants',
       title: 'مطاعم',
       titleEn: 'Restaurants',
       desc: 'نقدر نعمل لك موقع مشابه — قوائم طعام جميلة، حجز طاولات، وربط مع نظام نقاط بيع (POS).',
-      descEn: `We can build something like this — beautiful menus, table booking, and POS integration.`,
-      img: '/Resturant/rest1.png',     
-      hash: 'restaurants',
+      descEn: 'We can build something like this — beautiful menus, table booking, and POS integration.',
+      img: '/Resturant/rest1.png',
     },
     {
       id: 'hotels',
@@ -34,7 +34,6 @@ const PortfolioSection: React.FC = () => {
       desc: 'مواقع سريعة للحجز والعروض وغرف الفندق—تصميم أنيق ومتوافق مع الجوال.',
       descEn: 'Fast hotel sites with booking, offers and room galleries—clean and mobile-friendly.',
       img: '/Hotell/HotellBG.png',
-      hash: '#hotels',
     },
     {
       id: 'barber',
@@ -43,12 +42,8 @@ const PortfolioSection: React.FC = () => {
       desc: 'حجوزات مواعيد سهلة، قائمة خدمات وأسعار، وربط واتساب للتواصل.',
       descEn: 'Easy appointment booking, service lists & pricing, and WhatsApp handoff.',
       img: '/Barber/BarberBG.png',
-      hash: '#barber',
     },
   ];
-
-  // with HashRouter on the site, link like "/#/work#restaurants"
-  const workHref = (hash: string) => `/#/work${hash}`;
 
   return (
     <Reveal delay={0.6}>
@@ -65,12 +60,12 @@ const PortfolioSection: React.FC = () => {
             </p>
           </div>
 
-          {/* 3 linked tiles */}
+          {/* 3 tiles som peker til /Work (samme som CTA) */}
           <div className="grid md:grid-cols-3 gap-8">
             {teasers.map((t) => (
               <a
                 key={t.id}
-                href={workHref(t.hash)}
+                href={WORK_URL}
                 className="group block rounded-2xl overflow-hidden shadow-medium hover:shadow-heavy transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-color"
               >
                 <div className="relative h-64">
@@ -103,7 +98,7 @@ const PortfolioSection: React.FC = () => {
 
           {/* CTA under tiles */}
           <div className="text-center mt-10">
-            <a href="/Work" className="btn-secondary px-8 py-3 rounded-full font-semibold">
+            <a href={WORK_URL} className="btn-secondary px-8 py-3 rounded-full font-semibold">
               {isRTL ? 'كل التفاصيل على صفحة أعمالنا' : 'Full details on our Work page'}
             </a>
           </div>
