@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Reveal from '../components/anim/Reveal';
 import moussaImg from '../pictures/moussa.jpeg';
-import abdoImg from '../pictures/abdo.jpeg';
+import abdoImg from '../pictures/abdoa.jpg';
 import ibrahimImg from '../pictures/ibrahim.jpeg';
 import { Helmet } from 'react-helmet-async';
 import Seo from '../components/Seo';
